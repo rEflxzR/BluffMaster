@@ -1,6 +1,11 @@
 import React, { Component } from 'react'
 
 class Playerdashboard extends Component {
+
+    componentDidMount() {
+        document.title = 'Dashboard'
+    }
+
     render() {
         return (
             <div>
