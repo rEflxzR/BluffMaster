@@ -1,0 +1,14 @@
+{
+  "name": "questions_api",
+  "version": "1.0.0",
+  "description": "Question bank for the Quiz App",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "ReflxzR",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
