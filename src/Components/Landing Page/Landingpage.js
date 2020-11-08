@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
-import { Redirect, Link } from 'react-router-dom'
-import axios from 'axios'
+import { Link } from 'react-router-dom'
 import './Landingpage.css'
 
 class Landingpage extends Component {
@@ -26,7 +25,7 @@ class Landingpage extends Component {
                         <Link to='/playerlogin' className="btn btn-lg btn-success"><strong>PLAY NOW</strong></Link>
                     </div>
                     <div className="Admin-login mt-2">
-                        <Link to='/' className="btn btn-lg btn-primary"><strong>ADMIN LOGIN</strong></Link>
+                        <Link to='/adminlogin' className="btn btn-lg btn-primary"><strong>ADMIN LOGIN</strong></Link>
                     </div>
                 </div>
             </div>

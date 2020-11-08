@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Redirect } from 'react-router-dom'
+import { Redirect, withRouter } from 'react-router-dom'
 import axios from 'axios'
 
 class Playerloginpage extends Component {
@@ -10,37 +10,32 @@ class Playerloginpage extends Component {
             gamepin: '',
             authorized: false
         }
+        console.log(window.history.state.key)
+
         this.handleSubmitClick = this.handleSubmitClick.bind(this)
         this.handleChange = this.handleChange.bind(this)
     }
 
     componentDidMount() {
         document.title = 'Login | Player'
-        sessionStorage.setItem('playerLoggedIn', true)
-        sessionStorage.setItem('adminLoggedIn', true)
-    }
-
-    componentWillUnmount() {
-        if(this.state.authorized) {
-            sessionStorage.setItem('playerLoggedIn', true)
-        }
+        console.log("LOGINPAGE MOUNTED FIRST TIME")
     }
 
     handleChange(evt) {
         this.setState({ gamepin: evt.target.value })
     }
 
-    async handleSubmitClick(evt) {
+    handleSubmitClick(evt) {
         evt.preventDefault()
         const {gamepin} = this.state
 
-        await axios.post('http://localhost:8000/playerlogin', {gamepin}).then((res) => {
-            this.setState({ authorized: res.data }, () => {
-                sessionStorage.setItem('playerLoggedIn', res.data)
-                console.log(sessionStorage)
-            })
+        axios.post('http://localhost:8000/playerlogin', {gamepin}).then((res) => {
             if(!res.data) {
                 alert('PLEASE ENTER THE CORRECT GAMEPIN')
+            }
+            if(res.data) {
+                window.localStorage.setItem('playerLoggedIn', true)
+                this.setState({ authorized: true })
             }
         })
     }
@@ -67,4 +62,4 @@ class Playerloginpage extends Component {
     }
 }
 
-export default Playerloginpage
+export default withRouter(Playerloginpage)
