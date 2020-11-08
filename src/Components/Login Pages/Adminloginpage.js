@@ -9,7 +9,7 @@ class Adminloginpage extends Component {
         this.state = {
             username: '',
             password: '',
-            authorized: false
+            adminauthorized: false
         }
         this.handleSubmitClick = this.handleSubmitClick.bind(this)
         this.handleChange = this.handleChange.bind(this)
@@ -26,20 +26,22 @@ class Adminloginpage extends Component {
     async handleSubmitClick(evt) {
         evt.preventDefault()
         const {username, password} = this.state
+        const apiurl = `http://${window.location.hostname}:8000/adminlogin`
 
-        await axios.post('http://localhost:8000/adminlogin', {username, password}).then((res) => {
-            this.setState({ authorized: res.data })
+        await axios.post(apiurl, {username, password}).then((res) => {
             if(!res.data) {
                 alert('STRANGERS ARE NOT WELCOME!!!!!!!!')
+            }
+            if(res.data) {
+                window.localStorage.setItem('adminLoggedIn', true)
+                this.setState({ adminauthorized: true })
             }
         })
     }
 
     render() {
-        if(this.state.authorized) {
-            setTimeout(() => {
-                return <Redirect to='/admindashboard' />
-            }, 2000);
+        if(this.state.adminauthorized) {
+            return <Redirect to='/admindashboard' />
         }
         else {
             return (
@@ -47,10 +49,10 @@ class Adminloginpage extends Component {
                     <p className="text-center h2" style={{color: 'white', marginTop: '30vh'}}>QUIZ MASTER LOGIN</p>
                     <div className="d-flex justify-content-center mt-4">
                         <form onSubmit={this.handleSubmitClick}>
-                            <input onChange={this.handleChange} style={{ height: '40px' }} id="username" type="text" name="username" placeholder="Username" required />
-                            <input onChange={this.handleChange} style={{ height: '40px' }} id="password" type="text" name="password" placeholder="Password" required />
+                            <input className="mr-1" onChange={this.handleChange} style={{ height: '40px' }} id="username" type="text" name="username" placeholder="Username" required />
+                            <input className="ml-1" onChange={this.handleChange} style={{ height: '40px' }} id="password" type="password" name="password" placeholder="Password" required />
                             <div className="d-flex justify-content-center">
-                            <button className="btn btn-block btn-lg btn-success mt-2"><strong>LOGIN</strong></button>
+                                <button className="btn btn-block btn-lg btn-success mt-2"><strong>LOGIN</strong></button>
                             </div>
                         </form>
                     </div>

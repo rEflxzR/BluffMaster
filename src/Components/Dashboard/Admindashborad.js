@@ -1,6 +1,19 @@
 import React, { Component } from 'react'
 
 class Admindashboard extends Component {
+
+    constructor(props) {
+        super(props)
+    }
+
+    componentDidMount() {
+        document.title = 'Dashboard | Admin'
+    }
+
+    componentWillUnmount() {
+        window.localStorage.removeItem('adminLoggedIn')
+    }
+
     render() {
         return (
             <div>

@@ -14,7 +14,7 @@ class App extends Component {
             adminLoggedIn: false,
             playerLoggedIn: false
         }
-        
+
         this.handleLogIn = this.handleLogIn.bind(this)
     }
 
@@ -46,7 +46,13 @@ class App extends Component {
                             <Redirect to="/playerlogin" />
                         )
                     }} />
-                    <Route exact path="/admindashboard" component={Admindashboard} />
+                    <Route exact path="/admindashboard" component={() => {
+                        return window.localStorage.getItem('adminLoggedIn') ? (
+                            <Admindashboard />
+                        ) : (
+                            <Redirect to="/adminlogin" />
+                        )
+                    }} />
                 </Switch>
             </div>
         )

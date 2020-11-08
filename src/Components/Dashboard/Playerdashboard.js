@@ -4,16 +4,15 @@ class Playerdashboard extends Component {
 
     constructor(props) {
         super(props)
-        console.log(window.history.state.key)
-
     }
 
     componentDidMount() {
-        document.title = 'Dashboard'
+        document.title = 'Dashboard | Player'
     }
 
     componentWillUnmount() {
-        window.localStorage.removeItem('playerLoggedIn')
+        console.log("COMPONENT UNMOUNTED")
+        window.localStorage.clear()
     }
 
     render() {

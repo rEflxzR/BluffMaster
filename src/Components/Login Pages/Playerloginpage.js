@@ -8,9 +8,8 @@ class Playerloginpage extends Component {
         super(props)
         this.state = {
             gamepin: '',
-            authorized: false
+            playerauthorized: false
         }
-        console.log(window.history.state.key)
 
         this.handleSubmitClick = this.handleSubmitClick.bind(this)
         this.handleChange = this.handleChange.bind(this)
@@ -28,20 +27,21 @@ class Playerloginpage extends Component {
     handleSubmitClick(evt) {
         evt.preventDefault()
         const {gamepin} = this.state
+        const apiurl = `http://${window.location.hostname}:8000/playerlogin`
 
-        axios.post('http://localhost:8000/playerlogin', {gamepin}).then((res) => {
+        axios.post(apiurl, {gamepin}).then((res) => {
             if(!res.data) {
                 alert('PLEASE ENTER THE CORRECT GAMEPIN')
             }
             if(res.data) {
                 window.localStorage.setItem('playerLoggedIn', true)
-                this.setState({ authorized: true })
+                this.setState({ playerauthorized: true })
             }
         })
     }
 
     render() {
-        if(this.state.authorized) {
+        if(this.state.playerauthorized) {
             return <Redirect to='/playerdashboard' />
         }
         else {
