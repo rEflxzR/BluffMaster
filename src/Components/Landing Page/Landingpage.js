@@ -6,14 +6,10 @@ class Landingpage extends Component {
 
     async componentDidMount() {
         document.title = "Home | Qumong Us"
-
-        // await axios.get('http://localhost:8000/questions', {
-        //     headers: {
-        //         authorization: window.btoa('taskforce141')
-        //     }
-        // }).then((res) => {
-        //     console.log(res.data.questions_db[0])
-        // })
+        window.localStorage.removeItem('playerLoggedIn')
+        window.localStorage.removeItem('adminLoggedIn')
+        window.localStorage.removeItem('playerId')
+        window.localStorage.removeItem('adminId')
     }
 
     render() {

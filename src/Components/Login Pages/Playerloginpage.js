@@ -11,6 +11,9 @@ class Playerloginpage extends Component {
             playerauthorized: false
         }
 
+        window.localStorage.removeItem('playerLoggedIn')
+        window.localStorage.removeItem('playerId')
+
         this.handleSubmitClick = this.handleSubmitClick.bind(this)
         this.handleChange = this.handleChange.bind(this)
     }
@@ -30,11 +33,12 @@ class Playerloginpage extends Component {
         const apiurl = `http://${window.location.hostname}:8000/playerlogin`
 
         axios.post(apiurl, {gamepin}).then((res) => {
-            if(!res.data) {
+            if(!res.data.authenticated) {
                 alert('PLEASE ENTER THE CORRECT GAMEPIN')
             }
-            if(res.data) {
+            if(res.data.authenticated) {
                 window.localStorage.setItem('playerLoggedIn', true)
+                window.localStorage.setItem('playerId', res.data.playerId)
                 this.setState({ playerauthorized: true })
             }
         })

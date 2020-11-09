@@ -5,37 +5,24 @@ import Playerloginpage from './Components/Login Pages/Playerloginpage'
 import Adminloginpage from './Components/Login Pages/Adminloginpage'
 import Playerdashboard from './Components/Dashboard/Playerdashboard'
 import Admindashboard from './Components/Dashboard/Admindashborad'
+import Questioncard from './Components/Questioncard/Questioncard'
+import Gamepincard from './Components/Aux Components/Gamepincard'
 import './App.css'
 
+
+// APP CLASS
 class App extends Component {
-    constructor(props) {
-        super(props)
-        this.state = {
-            adminLoggedIn: false,
-            playerLoggedIn: false
-        }
-
-        this.handleLogIn = this.handleLogIn.bind(this)
-    }
-
-    componentDidMount() {
-        document.title = "APP HOME"
-        console.log("APP MOUNTED FIRST TIME")
-    }
-
-    handleLogIn() {
-        this.setState({ playerLoggedIn: true })
-    }
 
     render() {
         return (
             <div>
+                {/* <Playerdashboard /> */}
+                {/* <Admindashboard /> */}
+                {/* <Gamepincard /> */}
                 <Switch>
                     {/* PUBLICALLY ACCESSIBLE ROUTES */}
                     <Route exact path="/" component={Landingpage} />
-                    <Route exact path="/playerlogin" component={() => {
-                        return <Playerloginpage logIn={this.handleLogIn} />
-                    }} />
+                    <Route exact path="/playerlogin" component={Playerloginpage} />
                     <Route exact path="/adminlogin" component={Adminloginpage} />
 
                     {/* PRIVATE ROUTES ONLY ACCESSIBLE AFTER LOGIN */}
@@ -46,6 +33,7 @@ class App extends Component {
                             <Redirect to="/playerlogin" />
                         )
                     }} />
+
                     <Route exact path="/admindashboard" component={() => {
                         return window.localStorage.getItem('adminLoggedIn') ? (
                             <Admindashboard />
@@ -60,3 +48,30 @@ class App extends Component {
 }
 
 export default App;
+
+
+
+
+// <Switch>
+//                     {/* PUBLICALLY ACCESSIBLE ROUTES */}
+//                     <Route exact path="/" component={Landingpage} />
+//                     <Route exact path="/playerlogin" component={Playerloginpage} />
+//                     <Route exact path="/adminlogin" component={Adminloginpage} />
+
+//                     {/* PRIVATE ROUTES ONLY ACCESSIBLE AFTER LOGIN */}
+//                     <Route exact path="/playerdashboard" component={() => {
+//                         return window.localStorage.getItem('playerLoggedIn') ? (
+//                             <Playerdashboard />
+//                         ) : (
+//                             <Redirect to="/playerlogin" />
+//                         )
+//                     }} />
+
+//                     <Route exact path="/admindashboard" component={() => {
+//                         return window.localStorage.getItem('adminLoggedIn') ? (
+//                             <Admindashboard />
+//                         ) : (
+//                             <Redirect to="/adminlogin" />
+//                         )
+//                     }} />
+//                 </Switch>
