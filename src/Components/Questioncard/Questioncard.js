@@ -14,7 +14,9 @@ class Questioncard extends Component {
     }
 
     render() {
-        console.log(this.props)
+        if(this.props=={}) {
+            return null
+        }
         return (
             <div className="d-flex justify-content-center">
                 <div className="Card">

@@ -7,6 +7,7 @@ import Playerdashboard from './Components/Dashboard/Playerdashboard'
 import Admindashboard from './Components/Dashboard/Admindashborad'
 import Questioncard from './Components/Questioncard/Questioncard'
 import Gamepincard from './Components/Aux Components/Gamepincard'
+import Admingamecard from './Components/Aux Components/Admingamecard'
 import './App.css'
 
 
@@ -17,31 +18,9 @@ class App extends Component {
         return (
             <div>
                 {/* <Playerdashboard /> */}
-                {/* <Admindashboard /> */}
+                <Admindashboard />
                 {/* <Gamepincard /> */}
-                <Switch>
-                    {/* PUBLICALLY ACCESSIBLE ROUTES */}
-                    <Route exact path="/" component={Landingpage} />
-                    <Route exact path="/playerlogin" component={Playerloginpage} />
-                    <Route exact path="/adminlogin" component={Adminloginpage} />
-
-                    {/* PRIVATE ROUTES ONLY ACCESSIBLE AFTER LOGIN */}
-                    <Route exact path="/playerdashboard" component={() => {
-                        return window.localStorage.getItem('playerLoggedIn') ? (
-                            <Playerdashboard />
-                        ) : (
-                            <Redirect to="/playerlogin" />
-                        )
-                    }} />
-
-                    <Route exact path="/admindashboard" component={() => {
-                        return window.localStorage.getItem('adminLoggedIn') ? (
-                            <Admindashboard />
-                        ) : (
-                            <Redirect to="/adminlogin" />
-                        )
-                    }} />
-                </Switch>
+                {/* <Admingamecard /> */}
             </div>
         )
     }
