@@ -10,7 +10,8 @@ class Admindashboard extends Component {
         this.state = {
             pinset: false,
             gamepin: '',
-            page: 'home'
+            page: 'home',
+            playersJoined: 0
         }
 
         this.handleNewGameButton = this.handleNewGameButton.bind(this)
@@ -37,9 +38,23 @@ class Admindashboard extends Component {
 
     }
 
-    startGame() {
+    async startGame() {
         if(this.state.pinset) {
-            this.setState({ page: 'game' })
+            const apiurl = `http://${window.location.hostname}:8000/startgame`
+            const adminId = window.localStorage.getItem('adminId')
+            await axios.get(apiurl, {
+                headers: {
+                    id: adminId
+                }
+            }).then((res) => {
+                if(res.data==true) {
+                    this.setState({ page: 'game' })
+                }
+                else {
+                    console.log(res.data)
+                    this.setState({ playersJoined: res.data.playersJoined })
+                }
+            })
         }
     }
 
@@ -57,7 +72,9 @@ class Admindashboard extends Component {
                     this.state.page=='home' ? 
                     (
                         <div>
-                            <div className="d-flex align-items-end mb-4" style={{ height: "30vh" }}>
+                            
+                            <div className="d-flex flex-column justify-content-center mb-4" style={{ height: "30vh" }}>
+                                <h2 className="text-center text-light mb-4">Players Joined: {this.state.playersJoined}/6</h2>
                                 <div className="d-flex justify-content-center" style={{ width: "100vw" }}>
                                     <button onClick={this.handleNewGameButton}
                                     disabled={this.state.pinset}

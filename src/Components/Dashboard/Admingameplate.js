@@ -25,8 +25,17 @@ class Gameplate extends Component {
         }
     }
 
-    handleScoreboardTabClick() {
+    async handleScoreboardTabClick() {
         this.setState({ displayTab: 'scoreboard' })
+        const apiurl = `http://${window.location.hostname}:8000/scoreboard`
+        const adminId = window.localStorage.getItem('adminId')
+        await axios.get(apiurl, {
+            headers: {
+                id: adminId
+            }
+        }).then((res) => {
+            console.log(res.data)
+        })
     }
 
     handlePollTabClick() {

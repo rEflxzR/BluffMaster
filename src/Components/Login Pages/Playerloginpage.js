@@ -8,6 +8,7 @@ class Playerloginpage extends Component {
         super(props)
         this.state = {
             gamepin: '',
+            teamname: '',
             playerauthorized: false
         }
 
@@ -24,15 +25,16 @@ class Playerloginpage extends Component {
     }
 
     handleChange(evt) {
-        this.setState({ gamepin: evt.target.value })
+        this.setState({ [evt.currentTarget.id]: evt.currentTarget.value })
     }
 
     handleSubmitClick(evt) {
         evt.preventDefault()
-        const {gamepin} = this.state
+        const gamepin = this.state.gamepin
+        const teamname = this.state.teamname.toUpperCase()
         const apiurl = `http://${window.location.hostname}:8000/playerlogin`
 
-        axios.post(apiurl, {gamepin}).then((res) => {
+        axios.post(apiurl, {gamepin, teamname}).then((res) => {
             if(!res.data.authenticated) {
                 alert('PLEASE ENTER THE CORRECT GAMEPIN')
             }
@@ -41,6 +43,8 @@ class Playerloginpage extends Component {
                 window.localStorage.setItem('playerId', res.data.playerId)
                 this.setState({ playerauthorized: true })
             }
+        }).catch((err) => {
+            alert('MAXIMUM TEAMS LIMIT REACHED / TEAMNAME ALREADY IN USE')
         })
     }
 
@@ -54,7 +58,12 @@ class Playerloginpage extends Component {
                     <p className="text-center h2" style={{color: 'white', marginTop: '30vh'}}>ENTER YOUR GAMEPIN</p>
                     <div className="d-flex justify-content-center mt-4">
                         <form onSubmit={this.handleSubmitClick}>
-                            <input onChange={this.handleChange} style={{ height: '40px' }} id="gamepin" type="number" name="gamepin" placeholder="XXXXXXXX" required />
+                            <div>
+                                <input className="mb-1" onChange={this.handleChange} style={{ height: '40px' }} id="teamname" type="text" name="teamname" placeholder="TeamName (A/B/C/D/E/F)" required />
+                            </div>
+                            <div>
+                                <input className="mt-1" onChange={this.handleChange} style={{ height: '40px' }} id="gamepin" type="number" name="gamepin" placeholder="XXXXXXXX" required />
+                            </div>
                             <div className="d-flex justify-content-center">
                             <button className="btn btn-block btn-lg btn-success mt-2"><strong>LOGIN</strong></button>
                             </div>

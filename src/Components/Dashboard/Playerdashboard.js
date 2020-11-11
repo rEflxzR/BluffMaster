@@ -12,12 +12,13 @@ class Playerdashboard extends Component {
             currentQuestionNumber: 0,
             currentQuestion: [],
             currentOptions: [],
-            navMessage: 'You Are The IMPOSTER'
+            navMessage: 'There Is An Imposter Among You Guys'
         }
 
         this.playerResponse = this.playerResponse.bind(this)
         this.handleNextQuestionClick = this.handleNextQuestionClick.bind(this)
         this.handleSubmitClick = this.handleSubmitClick.bind(this)
+        this.handlePollBooth = this.handlePollBooth.bind(this)
     }
 
     componentDidMount() {
@@ -54,7 +55,7 @@ class Playerdashboard extends Component {
 
     async handleSubmitClick() {
         const apiurl = `http://${window.location.hostname}:8000/playerresponse`
-        const playerId = '75uhr-jf927-sd78gh2-32j78'
+        const playerId = window.localStorage.getItem('playerId')
         const answer = this.state.response
         await axios.post(apiurl, {playerId, answer}).then((res) => {
             this.setState({ nextQuestion: false, response: '', currentQuestion: [], currentOptions: [] })
@@ -62,6 +63,13 @@ class Playerdashboard extends Component {
             alert('OPTION ALREADY SELECTED!!!')
         })
         // this.setState({ nextQuestion: false, response: '', currentQuestion: [], currentOptions: [] })
+    }
+
+    handlePollBooth() {
+        const qnum = this.state.currentQuestionNumber
+        if(qnum%2==0 && qnum<9 && qnum>0) {
+            console.log("POLL BOOTH IS NOW ACTIVE")
+        }
     }
 
     render() {
@@ -94,6 +102,10 @@ class Playerdashboard extends Component {
                             <div className="d-flex justify-content-center mt-4">
                                 <button onClick={this.handleNextQuestionClick} 
                                 className="btn btn-lg btn-primary"><strong>NEXT QUESTION</strong></button>
+                            </div>
+                            <div className="d-flex justify-content-center mt-4">
+                                <button onClick={this.handlePollBooth} 
+                                className="btn btn-lg btn-warning"><strong>POLL BOOTH</strong></button>
                             </div>
                         </div>
                     )
