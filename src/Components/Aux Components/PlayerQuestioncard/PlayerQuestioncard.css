@@ -1,15 +1,19 @@
 @media only screen and (max-width : 540px) {
-    .qcard {
+    .qcardbody {
         width: 80vw;
         background-color: #5dcf51;
     }
 }
 
 @media only screen and (min-width : 720px) {
-    .qcard {
+    .qcardbody {
         width: 30vw;
         background-color: #5dcf51;
     }
+}
+
+.qcardbodymain {
+    background-color: #5dcf51;
 }
 
 .qcardbody p {

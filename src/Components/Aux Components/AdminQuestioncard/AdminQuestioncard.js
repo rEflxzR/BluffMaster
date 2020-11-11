@@ -45,8 +45,8 @@ class Questioncard extends Component {
             <div className="d-flex justify-content-center">
                 <div className="Card">
                     <div className="card qcard">
-                        <div className="card-body qcardbody mx-2 px-0 pb-0 mb-2">
-                            <h2 className="card-title text-center mb-2">QUESTION {this.props.questionNumber}</h2>
+                        <div className="card-body qcardbodya mx-2 px-0 pb-0 mb-2">
+                            <h2 className="card-title text-light text-center mb-2">QUESTION {this.props.questionNumber}</h2>
                             <p className="card-text text-center rounded mx-2 p-2"><strong>{this.props.question}</strong></p>
                             <div className="list-group mx-2 mt-2" id="list-tab" role="tablist">
                                 {
@@ -69,8 +69,11 @@ class Questioncard extends Component {
                         </div>
                     </div>
                     <div className="d-flex justify-content-around">
-                        <button className="btn btn-lg btn-danger mt-3" onClick={this.handleShowButton}>SHOW ALL OPTIONS</button>
-                        <button className="btn btn-lg btn-warning mt-3" onClick={this.handlePlayerResponse}>SHOW PLAYER RESPONSE</button>
+                        <button className="btn btn-lg btn-danger mt-3" 
+                        onClick={this.handleShowButton}><strong>SHOW ALL OPTIONS</strong></button>
+
+                        <button className="btn btn-lg btn-warning mt-3" 
+                        onClick={this.handlePlayerResponse}><strong>SHOW PLAYER RESPONSE</strong></button>
                     </div>
                 </div>
             </div>

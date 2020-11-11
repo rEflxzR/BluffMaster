@@ -57,7 +57,7 @@ class Gameplate extends Component {
                     </div>
 
                     <div className="Gamecard container mx-0">
-                        <div className="card text-center" style={{width: "100%", minHeight: "60vh"}}>
+                        <div className="card platecard text-center" style={{width: "100%", minHeight: "60vh"}}>
                             <div className="d-flex">
                                 <ul className="nav nav-tabs" id="myTab" role="tablist">
                                     <li className="nav-item" role="presentation" style={{ width: "34%" }}>

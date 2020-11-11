@@ -26,7 +26,7 @@ class Questioncard extends Component {
         return (
             <div className="d-flex justify-content-center">
                 <div className="Card">
-                    <div className="card qcard">
+                    <div className="card qcardbodymain">
                         <div className="card-body qcardbody mx-2 px-0 pb-0 mb-2">
                             <h2 className="card-title text-center mb-2">QUESTION {this.props.questionNumber}</h2>
                             <p className="card-text text-center rounded mx-2 p-2"><strong>{this.props.question}</strong></p>

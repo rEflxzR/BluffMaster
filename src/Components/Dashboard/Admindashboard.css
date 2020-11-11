@@ -1,3 +1,7 @@
+.platecard {
+    background-color: #caa472;
+}
+
 .nav-tabs {
     width: 100%;
 }
@@ -6,8 +10,9 @@
     width: 33%;
 }
 
+
 .nav-link {
-    background-color: aqua;
+    background-color: #caa472;
 }
 
 .active span {

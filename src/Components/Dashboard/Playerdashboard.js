@@ -45,9 +45,6 @@ class Playerdashboard extends Component {
                     currentQuestion: res.data.pop(), currentOptions: res.data, 
                     nextQuestion: true })
             }
-            if(res.status==204) {
-                console.log("NO DATA")
-            }
         })
         .catch((err) => {
             console.log(err)
@@ -84,11 +81,20 @@ class Playerdashboard extends Component {
                             question={this.state.currentQuestion}
                             options={this.state.currentOptions}
                             response={this.playerResponse} />
-                            <button onClick={this.handleSubmitClick} className="btn btn-lg btn-success">SUBMIT RESPONSE</button>
+                            <div className="d-flex justify-content-center my-3">
+                                <button onClick={this.handleSubmitClick} 
+                                className="btn btn-lg btn-info"><strong>SUBMIT RESPONSE</strong></button>
+                            </div>
                         </div>
                     ) : (
-                        <div>
-                            <button onClick={this.handleNextQuestionClick} className="btn btn-lg btn-primary">NEXT QUESTION</button>
+                        <div className="d-flex flex-column justify-content-center" style={{ minHeight: '60vh' }}>
+                            <h2 className="h2 text-center text-light">
+                                COMPLETED: {this.state.currentQuestionNumber}/10 Questions</h2>
+                                
+                            <div className="d-flex justify-content-center mt-4">
+                                <button onClick={this.handleNextQuestionClick} 
+                                className="btn btn-lg btn-primary"><strong>NEXT QUESTION</strong></button>
+                            </div>
                         </div>
                     )
                 }
