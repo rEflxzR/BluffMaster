@@ -1,0 +1,15 @@
+.nav-tabs {
+    width: 100%;
+}
+
+.nav-item {
+    width: 33%;
+}
+
+.nav-link {
+    background-color: aqua;
+}
+
+.active span {
+    color: black
+}

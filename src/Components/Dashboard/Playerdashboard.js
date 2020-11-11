@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import axios from 'axios'
-import Questioncard from '../Questioncard/Questioncard'
+import Questioncard from '../Aux Components/PlayerQuestioncard/PlayerQuestioncard'
 
 class Playerdashboard extends Component {
 
@@ -8,7 +8,7 @@ class Playerdashboard extends Component {
         super(props)
         this.state = {
             nextQuestion: false,
-            response: '',
+            response: {},
             currentQuestionNumber: 0,
             currentQuestion: [],
             currentOptions: [],
@@ -45,14 +45,26 @@ class Playerdashboard extends Component {
                     currentQuestion: res.data.pop(), currentOptions: res.data, 
                     nextQuestion: true })
             }
+            if(res.status==204) {
+                console.log("NO DATA")
+            }
         })
         .catch((err) => {
+            console.log(err)
             this.setState({ navMessage : "YOU CAN NO LONGER PARTICIPATE FURTHER ROUNDS :(" })
         })
     }
 
-    handleSubmitClick() {
-        this.setState({ nextQuestion: false, response: '', currentQuestion: [], currentOptions: [] })
+    async handleSubmitClick() {
+        const apiurl = `http://${window.location.hostname}:8000/playerresponse`
+        const playerId = '75uhr-jf927-sd78gh2-32j78'
+        const answer = this.state.response
+        await axios.post(apiurl, {playerId, answer}).then((res) => {
+            this.setState({ nextQuestion: false, response: '', currentQuestion: [], currentOptions: [] })
+        }).catch((err) => {
+            alert('OPTION ALREADY SELECTED!!!')
+        })
+        // this.setState({ nextQuestion: false, response: '', currentQuestion: [], currentOptions: [] })
     }
 
     render() {
@@ -86,3 +98,24 @@ class Playerdashboard extends Component {
 }
 
 export default Playerdashboard
+
+
+// ARRAY SHUFFLE FUNCTION
+// function shuffle(array) {
+//     var currentIndex = array.length, temporaryValue, randomIndex;
+  
+//     // While there remain elements to shuffle...
+//     while (0 !== currentIndex) {
+  
+//       // Pick a remaining element...
+//       randomIndex = Math.floor(Math.random() * currentIndex);
+//       currentIndex -= 1;
+  
+//       // And swap it with the current element.
+//       temporaryValue = array[currentIndex];
+//       array[currentIndex] = array[randomIndex];
+//       array[randomIndex] = temporaryValue;
+//     }
+  
+//     return array;
+//   }

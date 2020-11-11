@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import './Questioncard.css'
+import './PlayerQuestioncard.css'
 
 class Questioncard extends Component {
     constructor(props) {
@@ -9,8 +9,14 @@ class Questioncard extends Component {
     }
 
     handleOptionClick(evt) {
-        console.log(evt.target.getAttribute('points'))
-        this.props.response(evt.target.getAttribute('value'))
+        if(evt.currentTarget.getAttribute('value')!=null && evt.currentTarget.getAttribute('points')!=null) {
+            this.props.response(
+                {
+                    value: evt.currentTarget.getAttribute('value'),
+                    points: evt.currentTarget.getAttribute('points')
+                }
+            )
+        }
     }
 
     render() {

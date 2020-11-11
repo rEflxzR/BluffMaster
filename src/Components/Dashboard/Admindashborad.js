@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import axios from 'axios'
 import Gameplate from './Admingameplate'
-import Admingamecard from '../Aux Components/Admingamecard'
 import Gamepincard from '../Aux Components/Gamepincard'
 
 class Admindashboard extends Component {

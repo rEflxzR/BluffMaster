@@ -5,9 +5,7 @@ import Playerloginpage from './Components/Login Pages/Playerloginpage'
 import Adminloginpage from './Components/Login Pages/Adminloginpage'
 import Playerdashboard from './Components/Dashboard/Playerdashboard'
 import Admindashboard from './Components/Dashboard/Admindashborad'
-import Questioncard from './Components/Questioncard/Questioncard'
 import Gamepincard from './Components/Aux Components/Gamepincard'
-import Admingamecard from './Components/Aux Components/Admingamecard'
 import './App.css'
 
 
@@ -17,10 +15,9 @@ class App extends Component {
     render() {
         return (
             <div>
-                {/* <Playerdashboard /> */}
+                <Playerdashboard />
                 <Admindashboard />
                 {/* <Gamepincard /> */}
-                {/* <Admingamecard /> */}
             </div>
         )
     }
