@@ -2,6 +2,28 @@ import React, { Component } from 'react'
 import axios from 'axios'
 import Questioncard from '../Aux Components/PlayerQuestioncard/PlayerQuestioncard'
 
+
+// SHUFFLER FUNCTION
+function shuffleArray(array) {
+    let currentIndex = array.length-1, temporaryValue, randomIndex;
+  
+    // While there remain elements to shuffle...
+    while (0 !== currentIndex) {
+  
+      // Pick a remaining element...
+      randomIndex = Math.floor(Math.random() * currentIndex);
+      currentIndex -= 1;
+  
+      // And swap it with the current element.
+      temporaryValue = array[currentIndex];
+      array[currentIndex] = array[randomIndex];
+      array[randomIndex] = temporaryValue;
+    }
+  
+    return array;
+  }
+
+
 class Playerdashboard extends Component {
 
     constructor(props) {
@@ -42,9 +64,17 @@ class Playerdashboard extends Component {
             }
         }).then((res) => {
             if(res.status==200) {
-                this.setState({ currentQuestionNumber: this.state.currentQuestionNumber+1, 
-                    currentQuestion: res.data.pop(), currentOptions: res.data, 
-                    nextQuestion: true })
+                console.log(res.data)
+                if(res.data.doShuffle) {
+                    this.setState({ currentQuestionNumber: this.state.currentQuestionNumber+1, 
+                        currentQuestion: res.data.qdata.pop(), currentOptions: shuffleArray(res.data.qdata), 
+                        nextQuestion: true, navMessage: 'You are Not The Imposter' })
+                }
+                else {
+                    this.setState({ currentQuestionNumber: this.state.currentQuestionNumber+1, 
+                        currentQuestion: res.data.qdata.pop(), currentOptions: res.data.qdata, 
+                        nextQuestion: true, navMessage: 'You are The Imposter' })
+                }
             }
         })
         .catch((err) => {
@@ -116,24 +146,3 @@ class Playerdashboard extends Component {
 }
 
 export default Playerdashboard
-
-
-// ARRAY SHUFFLE FUNCTION
-// function shuffle(array) {
-//     var currentIndex = array.length, temporaryValue, randomIndex;
-  
-//     // While there remain elements to shuffle...
-//     while (0 !== currentIndex) {
-  
-//       // Pick a remaining element...
-//       randomIndex = Math.floor(Math.random() * currentIndex);
-//       currentIndex -= 1;
-  
-//       // And swap it with the current element.
-//       temporaryValue = array[currentIndex];
-//       array[currentIndex] = array[randomIndex];
-//       array[randomIndex] = temporaryValue;
-//     }
-  
-//     return array;
-//   }
