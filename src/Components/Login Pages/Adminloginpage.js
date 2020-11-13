@@ -21,6 +21,8 @@ class Adminloginpage extends Component {
 
     componentDidMount() {
         document.title = 'Login | Admin'
+        // SEND A POST REQUEST TO RESET ALL THE GAME PARAMETERS IN BACKEND
+
     }
 
     handleChange(evt) {

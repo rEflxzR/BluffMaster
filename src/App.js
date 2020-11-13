@@ -5,7 +5,7 @@ import Playerloginpage from './Components/Login Pages/Playerloginpage'
 import Adminloginpage from './Components/Login Pages/Adminloginpage'
 import Playerdashboard from './Components/Dashboard/Playerdashboard'
 import Admindashboard from './Components/Dashboard/Admindashborad'
-import Example from './Components/Aux Components/Leaderboard/Leaderboardchart'
+import Chart from './Components/Aux Components/Leaderboard/Leaderboardchart'
 // import './App.css'
 
 
@@ -15,7 +15,7 @@ class App extends Component {
     render() {
         return (
             <div>
-                <Example />
+                <Chart />
             </div>
         )
     }
