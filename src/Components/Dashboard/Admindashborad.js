@@ -11,7 +11,7 @@ class Admindashboard extends Component {
             pinset: false,
             gamepin: '',
             page: 'home',
-            playersJoined: 0
+            playersJoined: 0,
         }
 
         this.handleNewGameButton = this.handleNewGameButton.bind(this)

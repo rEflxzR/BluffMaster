@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import axios from 'axios'
 import Questioncard from '../Aux Components/AdminQuestioncard/AdminQuestioncard'
+import Chart from '../Aux Components/Leaderboard/Leaderboardchart'
 import './Admindashboard.css'
 
 class Gameplate extends Component {
@@ -10,13 +11,15 @@ class Gameplate extends Component {
             currentQuestionNumber: 0,
             currentQuestion: [],
             currentOptions: [],
-            displayTab: ''
+            displayTab: '',
+            scores: []
         }
 
         this.handleNextQuestionClick = this.handleNextQuestionClick.bind(this)
         this.handleQuestionTabClick = this.handleQuestionTabClick.bind(this)
         this.handleScoreboardTabClick = this.handleScoreboardTabClick.bind(this)
         this.handlePollTabClick = this.handlePollTabClick.bind(this)
+        this.handlePollBoothToggler = this.handlePollBoothToggler.bind(this)
     }
 
     handleQuestionTabClick() {
@@ -34,12 +37,15 @@ class Gameplate extends Component {
                 id: adminId
             }
         }).then((res) => {
-            console.log(res.data)
+            this.setState({ scores: res.data })
         })
     }
 
     handlePollTabClick() {
-        this.setState({ displayTab: 'poll' })
+        const qnum = this.state.currentQuestionNumber
+        if(qnum>0 && qnum%2==0 && qnum<9) {
+            this.setState({ displayTab: 'poll' })
+        }
     }
 
     async handleNextQuestionClick() {
@@ -54,6 +60,14 @@ class Gameplate extends Component {
             }), () => {
                 this.handleQuestionTabClick()
             })
+        })
+    }
+
+    handlePollBoothToggler() {
+        const apiurl = `http://${window.location.hostname}:8000/togglepolls`
+        const adminId = window.localStorage.getItem('adminId')
+        axios.post(apiurl, {adminId}).then((res) => {
+            console.log("POLL TOGGLED")
         })
     }
 
@@ -99,7 +113,9 @@ class Gameplate extends Component {
                                 }
                                 {
                                     this.state.displayTab==='scoreboard' ? (
-                                        null
+                                        <div className="d-flex justify-content-center">
+                                            <Chart scores={this.state.scores} />
+                                        </div>
                                     ) : (
                                         null
                                     )
@@ -115,8 +131,15 @@ class Gameplate extends Component {
                         </div>
                     </div>
 
-                    <div className="d-flex align-items-center">
-                        <button className="btn btn-lg btn-primary"
+                    <div className="d-flex flex-column justify-content-center">
+                    <button className="btn btn-lg btn-warning mb-3"
+                            disabled={this.state.currentQuestionNumber%2==0 && this.state.currentQuestionNumber<9
+                                && this.state.currentQuestionNumber>=0 ? false : true}
+                            onClick={this.handlePollBoothToggler}
+                            style={{ whiteSpace: 'nowrap' }}>
+                            <strong>TOGGLE POLLING BOOTH</strong>
+                        </button>
+                        <button className="btn btn-lg btn-primary mt-3"
                             onClick={this.handleNextQuestionClick}
                             style={{ whiteSpace: 'nowrap' }}>
                             <strong>NEXT QUESTION</strong>

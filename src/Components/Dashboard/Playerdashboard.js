@@ -1,27 +1,24 @@
 import React, { Component } from 'react'
 import axios from 'axios'
 import Questioncard from '../Aux Components/PlayerQuestioncard/PlayerQuestioncard'
+import Pollbooth from '../Aux Components/Pollbooth'
 
 
 // SHUFFLER FUNCTION
 function shuffleArray(array) {
     let currentIndex = array.length-1, temporaryValue, randomIndex;
-  
-    // While there remain elements to shuffle...
     while (0 !== currentIndex) {
   
-      // Pick a remaining element...
-      randomIndex = Math.floor(Math.random() * currentIndex);
-      currentIndex -= 1;
+        randomIndex = Math.floor(Math.random() * currentIndex);
+        currentIndex -= 1;
   
-      // And swap it with the current element.
-      temporaryValue = array[currentIndex];
-      array[currentIndex] = array[randomIndex];
-      array[randomIndex] = temporaryValue;
+        temporaryValue = array[currentIndex];
+        array[currentIndex] = array[randomIndex];
+        array[randomIndex] = temporaryValue;
     }
   
     return array;
-  }
+}
 
 
 class Playerdashboard extends Component {
@@ -34,13 +31,16 @@ class Playerdashboard extends Component {
             currentQuestionNumber: 0,
             currentQuestion: [],
             currentOptions: [],
-            navMessage: 'There Is An Imposter Among You Guys'
+            navMessage: 'There Is An Imposter Among You Guys',
+            showPoll: false,
+            pollData: []
         }
 
         this.playerResponse = this.playerResponse.bind(this)
         this.handleNextQuestionClick = this.handleNextQuestionClick.bind(this)
         this.handleSubmitClick = this.handleSubmitClick.bind(this)
         this.handlePollBooth = this.handlePollBooth.bind(this)
+        this.toggleBooth = this.toggleBooth.bind(this)
     }
 
     componentDidMount() {
@@ -95,11 +95,25 @@ class Playerdashboard extends Component {
         // this.setState({ nextQuestion: false, response: '', currentQuestion: [], currentOptions: [] })
     }
 
-    handlePollBooth() {
+    async handlePollBooth() {
         const qnum = this.state.currentQuestionNumber
-        if(qnum%2==0 && qnum<9 && qnum>0) {
-            console.log("POLL BOOTH IS NOW ACTIVE")
+        const apiurl = `http://${window.location.hostname}:8000/playerpoll`
+        const playerId = window.localStorage.getItem('playerId')
+        if(qnum%2==0 && qnum<9 && qnum>=0) {
+            axios.get(apiurl, {
+                headers: {
+                    id: playerId
+                }
+            }).then((res) => {
+                if(res.status==200) {
+                    this.setState({ showPoll: true, pollData: res.data })
+                }
+            })
         }
+    }
+
+    toggleBooth() {
+        this.setState({ showPoll: !this.state.showPoll })
     }
 
     render() {
@@ -137,6 +151,15 @@ class Playerdashboard extends Component {
                                 <button onClick={this.handlePollBooth} 
                                 className="btn btn-lg btn-warning"><strong>POLL BOOTH</strong></button>
                             </div>
+                            {
+                                this.state.showPoll ? (
+                                    <div className="mt-5">
+                                        <Pollbooth toggleBooth={this.boothToggle} data={this.state.pollData} />
+                                    </div>
+                                ) : (
+                                    null
+                                )
+                            }
                         </div>
                     )
                 }
