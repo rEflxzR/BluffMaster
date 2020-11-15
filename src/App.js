@@ -5,8 +5,6 @@ import Playerloginpage from './Components/Login Pages/Playerloginpage'
 import Adminloginpage from './Components/Login Pages/Adminloginpage'
 import Playerdashboard from './Components/Dashboard/Playerdashboard'
 import Admindashboard from './Components/Dashboard/Admindashborad'
-import Chart from './Components/Aux Components/Leaderboard/Leaderboardchart'
-import Pollform from './Components/Aux Components/Pollbooth'
 import './App.css'
 
 
@@ -44,4 +42,4 @@ class App extends Component {
     }
 }
 
-export default App;
+export default App

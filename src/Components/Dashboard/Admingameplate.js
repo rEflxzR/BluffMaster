@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import axios from 'axios'
 import Questioncard from '../Aux Components/AdminQuestioncard/AdminQuestioncard'
 import Chart from '../Aux Components/Leaderboard/Leaderboardchart'
+import Pollchart from '../Aux Components/PlayerPollsChart/Playerpollschart'
 import './Admindashboard.css'
 
 class Gameplate extends Component {
@@ -12,7 +13,8 @@ class Gameplate extends Component {
             currentQuestion: [],
             currentOptions: [],
             displayTab: '',
-            scores: []
+            scores: [],
+            polldata: []
         }
 
         this.handleNextQuestionClick = this.handleNextQuestionClick.bind(this)
@@ -20,6 +22,7 @@ class Gameplate extends Component {
         this.handleScoreboardTabClick = this.handleScoreboardTabClick.bind(this)
         this.handlePollTabClick = this.handlePollTabClick.bind(this)
         this.handlePollBoothToggler = this.handlePollBoothToggler.bind(this)
+        this.pollReset = this.pollReset.bind(this)
     }
 
     handleQuestionTabClick() {
@@ -43,9 +46,22 @@ class Gameplate extends Component {
 
     handlePollTabClick() {
         const qnum = this.state.currentQuestionNumber
-        if(qnum>0 && qnum%2==0 && qnum<9) {
+        if(qnum>0 && qnum%2===0 && qnum<9) {
             this.setState({ displayTab: 'poll' })
+            const apiurl = `http://${window.location.hostname}:8000/pollresults`
+            const adminId = window.localStorage.getItem('adminId')
+            axios.get(apiurl, {
+                headers: {
+                    id: adminId
+                }
+            }).then((res) => {
+                this.setState({ polldata: res.data })
+            })
         }
+    }
+
+    pollReset(data) {
+        this.setState({ polldata: data })
     }
 
     async handleNextQuestionClick() {
@@ -55,11 +71,8 @@ class Gameplate extends Component {
             this.setState(st => ({
                 currentQuestionNumber: st.currentQuestionNumber+1,
                 currentQuestion: res.data.pop(),
-                currentOptions: res.data,
-                displayTab: 'question'
-            }), () => {
-                this.handleQuestionTabClick()
-            })
+                currentOptions: res.data
+            }))
         })
     }
 
@@ -84,7 +97,7 @@ class Gameplate extends Component {
                             <div className="d-flex">
                                 <ul className="nav nav-tabs" id="myTab" role="tablist">
                                     <li className="nav-item" role="presentation" style={{ width: "34%" }}>
-                                        <a onClick={this.handleQuestionTabClick} className="nav-link active text-dark" type="button" id="question" data-toggle="tab" href="question" role="tab" aria-controls="btech" aria-selected="false">
+                                        <a onClick={this.handleQuestionTabClick} className="nav-link text-dark" type="button" id="question" data-toggle="tab" href="question" role="tab" aria-controls="btech" aria-selected="false">
                                             <span><strong>QUESTION CARD</strong></span>
                                         </a>
                                     </li>
@@ -122,7 +135,9 @@ class Gameplate extends Component {
                                 }
                                 {
                                     this.state.displayTab==='poll' ? (
-                                        null
+                                        <div className="d-flex justify-content-center">
+                                            <Pollchart pollreset={this.pollReset} polldata={this.state.polldata} />
+                                        </div>
                                     ) : (
                                         null
                                     )
@@ -133,8 +148,8 @@ class Gameplate extends Component {
 
                     <div className="d-flex flex-column justify-content-center">
                     <button className="btn btn-lg btn-warning mb-3"
-                            disabled={this.state.currentQuestionNumber%2==0 && this.state.currentQuestionNumber<9
-                                && this.state.currentQuestionNumber>=0 ? false : true}
+                            disabled={this.state.currentQuestionNumber%2===0 && this.state.currentQuestionNumber<9
+                                && this.state.currentQuestionNumber>0 ? false : true}
                             onClick={this.handlePollBoothToggler}
                             style={{ whiteSpace: 'nowrap' }}>
                             <strong>TOGGLE POLLING BOOTH</strong>

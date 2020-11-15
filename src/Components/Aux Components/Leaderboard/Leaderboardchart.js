@@ -2,9 +2,6 @@ import React, { Component } from 'react'
 import './chart.css'
 
 class Chart extends Component {
-	constructor(props) {
-		super(props)
-	}
 
 	render() {
 		return (

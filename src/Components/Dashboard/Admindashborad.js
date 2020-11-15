@@ -47,7 +47,7 @@ class Admindashboard extends Component {
                     id: adminId
                 }
             }).then((res) => {
-                if(res.data==true) {
+                if(res.data===true) {
                     this.setState({ page: 'game' })
                 }
                 else {
@@ -69,7 +69,7 @@ class Admindashboard extends Component {
 
                 {/* CONDTIONALLY SHOW THE HOMEPAGE OR GAMEPAGE */}
                 {
-                    this.state.page=='home' ? 
+                    this.state.page==='home' ? 
                     (
                         <div>
                             

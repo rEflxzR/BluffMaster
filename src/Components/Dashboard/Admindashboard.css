@@ -12,7 +12,11 @@
 
 
 .nav-link {
-    background-color: #caa472;
+    background-color:#574333;
+}
+
+.nav-link span {
+    color: white
 }
 
 .active span {

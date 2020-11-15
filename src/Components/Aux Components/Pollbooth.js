@@ -19,15 +19,20 @@ class Pollbooth extends Component {
 
     async handleFormSubmitClick(evt) {
         evt.preventDefault()
-        const apiurl = `http://${window.location.hostname}:8000/pollresponse`
-        const playerId = window.localStorage.getItem('playerId')
-        const response = this.state.selectedTeam
-        await axios.post(apiurl, {playerId, response}).then((res) => {
-            console.log("Response Submitted Successfully")
-            this.props.toggleBooth()
-        }).catch((err) => {
-            console.log("Some Error Ocurred while Submitting your response")
-        })
+        if(this.state.selectedTeam==='') {
+            alert("NOTA is NOT an Option!!!")
+        }
+        else {
+            const apiurl = `http://${window.location.hostname}:8000/pollresponse`
+            const playerId = window.localStorage.getItem('playerId')
+            const response = this.state.selectedTeam
+            await axios.post(apiurl, {playerId, response}).then((res) => {
+                console.log("Response Submitted Successfully")
+                this.props.toggleBooth()
+            }).catch((err) => {
+                console.log("Some Error Ocurred while Submitting your response")
+            })
+        }
     }
 
     render() {

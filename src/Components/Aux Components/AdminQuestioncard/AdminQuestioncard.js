@@ -38,7 +38,7 @@ class Questioncard extends Component {
     }
 
     render() {
-        if(this.props=={}) {
+        if(this.props==={}) {
             return null
         }
         return (

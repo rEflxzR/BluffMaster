@@ -40,7 +40,7 @@ class Playerdashboard extends Component {
         this.handleNextQuestionClick = this.handleNextQuestionClick.bind(this)
         this.handleSubmitClick = this.handleSubmitClick.bind(this)
         this.handlePollBooth = this.handlePollBooth.bind(this)
-        this.toggleBooth = this.toggleBooth.bind(this)
+        this.boothToggle = this.boothToggle.bind(this)
     }
 
     componentDidMount() {
@@ -63,7 +63,7 @@ class Playerdashboard extends Component {
                 id: window.localStorage.getItem('playerId')
             }
         }).then((res) => {
-            if(res.status==200) {
+            if(res.status===200) {
                 console.log(res.data)
                 if(res.data.doShuffle) {
                     this.setState({ currentQuestionNumber: this.state.currentQuestionNumber+1, 
@@ -79,7 +79,7 @@ class Playerdashboard extends Component {
         })
         .catch((err) => {
             console.log(err)
-            this.setState({ navMessage : "YOU CAN NO LONGER PARTICIPATE FURTHER ROUNDS :(" })
+            this.setState({ navMessage : "YOU CAN NO LONGER PARTICIPATE IN FURTHER ROUNDS :(" })
         })
     }
 
@@ -99,20 +99,20 @@ class Playerdashboard extends Component {
         const qnum = this.state.currentQuestionNumber
         const apiurl = `http://${window.location.hostname}:8000/playerpoll`
         const playerId = window.localStorage.getItem('playerId')
-        if(qnum%2==0 && qnum<9 && qnum>=0) {
+        if(qnum%2===0 && qnum<9 && qnum>0) {
             axios.get(apiurl, {
                 headers: {
                     id: playerId
                 }
             }).then((res) => {
-                if(res.status==200) {
+                if(res.status===200) {
                     this.setState({ showPoll: true, pollData: res.data })
                 }
             })
         }
     }
 
-    toggleBooth() {
+    boothToggle() {
         this.setState({ showPoll: !this.state.showPoll })
     }
 
