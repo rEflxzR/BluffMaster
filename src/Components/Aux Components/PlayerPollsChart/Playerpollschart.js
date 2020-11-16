@@ -26,7 +26,7 @@ class PollChart extends Component {
 		const adminId = window.localStorage.getItem('adminId')
 		await axios.post(apiurl, {adminId}).then((res) => {
 			console.log(res.data)
-			this.setState({ kickedOutTeam: String(res.data) })
+			this.setState({ kickedOutTeam: String(res.data), pollSubmitted: true })
 		})
 	}
 
