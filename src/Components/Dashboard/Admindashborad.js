@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { Redirect } from 'react-router-dom'
 import axios from 'axios'
 import Gameplate from './Admingameplate'
 import Gamepincard from '../Aux Components/Gamepincard'
@@ -12,10 +13,12 @@ class Admindashboard extends Component {
             gamepin: '',
             page: 'home',
             playersJoined: 0,
+            logOut: false
         }
 
         this.handleNewGameButton = this.handleNewGameButton.bind(this)
         this.startGame = this.startGame.bind(this)
+        this.handlelogoutclick = this.handlelogoutclick.bind(this)
     }
 
     componentDidMount() {
@@ -24,6 +27,10 @@ class Admindashboard extends Component {
 
     componentWillUnmount() {
         window.localStorage.removeItem('adminLoggedIn')
+    }
+
+    handlelogoutclick() {
+        this.setState({ logOut: true })  
     }
 
     async handleNewGameButton() {    
@@ -59,11 +66,19 @@ class Admindashboard extends Component {
     }
 
     render() {
+        if(this.state.logOut) {
+            return <Redirect to='/' />
+        }
         return (
             <div>
                 <div>
-                    <nav className="navbar navbar-light bg-dark justify-content-center">
-                    <h3 className="text-light text-center h2" style={{ fontSize: "4rem" }}>QUIZ MASTER DASHBOARD</h3>
+                    <nav className="navbar navbar-light bg-dark d-flex">
+                        <div className="justify-content-center" style={{ width: '90%' }}>
+                            <h3 className="text-light text-center h2" style={{ fontSize: "3rem" }}>QUIZ MASTER DASHBOARD</h3>
+                        </div>
+                        <div className="justify-content-end">
+                            <a onClick={this.handlelogoutclick} type="button" className="btn btn-lg text-light">LOGOUT</a>
+                        </div>
                     </nav>
                 </div>
 

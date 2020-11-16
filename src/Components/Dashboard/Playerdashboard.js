@@ -100,7 +100,7 @@ class Playerdashboard extends Component {
         const apiurl = `http://${window.location.hostname}:8000/playerpoll`
         const playerId = window.localStorage.getItem('playerId')
         if(qnum%2===0 && qnum<9 && qnum>0) {
-            axios.get(apiurl, {
+            await axios.get(apiurl, {
                 headers: {
                     id: playerId
                 }

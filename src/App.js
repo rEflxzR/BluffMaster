@@ -1,10 +1,12 @@
 import React, { Component } from 'react'
 import { Redirect, Route, Switch } from 'react-router-dom'
+import axios from 'axios'
 import Landingpage from './Components/Landing Page/Landingpage'
 import Playerloginpage from './Components/Login Pages/Playerloginpage'
 import Adminloginpage from './Components/Login Pages/Adminloginpage'
 import Playerdashboard from './Components/Dashboard/Playerdashboard'
 import Admindashboard from './Components/Dashboard/Admindashborad'
+import Admingameplate from './Components/Dashboard/Admingameplate'
 import './App.css'
 
 

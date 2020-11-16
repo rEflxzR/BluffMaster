@@ -3,6 +3,7 @@ import axios from 'axios'
 import Questioncard from '../Aux Components/AdminQuestioncard/AdminQuestioncard'
 import Chart from '../Aux Components/Leaderboard/Leaderboardchart'
 import Pollchart from '../Aux Components/PlayerPollsChart/Playerpollschart'
+import Winnerspage from '../Aux Components/Winnerspage'
 import './Admindashboard.css'
 
 class Gameplate extends Component {
@@ -14,7 +15,9 @@ class Gameplate extends Component {
             currentOptions: [],
             displayTab: '',
             scores: [],
-            polldata: []
+            polldata: [],
+            isGameOver: false,
+            finalResult: []
         }
 
         this.handleNextQuestionClick = this.handleNextQuestionClick.bind(this)
@@ -65,15 +68,24 @@ class Gameplate extends Component {
     }
 
     async handleNextQuestionClick() {
-        const apiurl = `http://${window.location.hostname}:8000/nextquestion`
-        const adminId = window.localStorage.getItem('adminId')
-        await axios.post(apiurl, {adminId}).then((res) => {
-            this.setState(st => ({
-                currentQuestionNumber: st.currentQuestionNumber+1,
-                currentQuestion: res.data.pop(),
-                currentOptions: res.data
-            }))
-        })
+        if(this.state.currentQuestionNumber==10) {
+            const apiurl = `http://${window.location.hostname}:8000/nextquestion`
+            const adminId = window.localStorage.getItem('adminId')
+            await axios.post(apiurl, {adminId}).then((res) => {
+                this.setState({ isGameOver: true, finalResult: res.data })  
+            })
+        }
+        else {
+            const apiurl = `http://${window.location.hostname}:8000/nextquestion`
+            const adminId = window.localStorage.getItem('adminId')
+            await axios.post(apiurl, {adminId}).then((res) => {
+                this.setState(st => ({
+                    currentQuestionNumber: st.currentQuestionNumber+1,
+                    currentQuestion: res.data.pop(),
+                    currentOptions: res.data
+                }))
+            })
+        }
     }
 
     handlePollBoothToggler() {
@@ -87,80 +99,86 @@ class Gameplate extends Component {
     render() {
         return (
             <div className="row">
-                <div className="col col-10 offset-1 mt-5 d-flex">
-                    <div className="d-flex align-items-center">
-                        <h3 className="text-light h2">Current Question Number: {this.state.currentQuestionNumber}</h3>
-                    </div>
+                {
+                    this.state.isGameOver ? (
+                        <Winnerspage finalResult={this.state.finalResult} />
+                    ) : (
+                        <div className="col col-10 offset-1 mt-5 d-flex">
+                        <div className="d-flex align-items-center">
+                            <h3 className="text-light h2">Current Question Number: {this.state.currentQuestionNumber}</h3>
+                        </div>
 
-                    <div className="Gamecard container mx-0">
-                        <div className="card platecard text-center" style={{width: "100%", minHeight: "60vh"}}>
-                            <div className="d-flex">
-                                <ul className="nav nav-tabs" id="myTab" role="tablist">
-                                    <li className="nav-item" role="presentation" style={{ width: "34%" }}>
-                                        <a onClick={this.handleQuestionTabClick} className="nav-link text-dark" type="button" id="question" data-toggle="tab" href="question" role="tab" aria-controls="btech" aria-selected="false">
-                                            <span><strong>QUESTION CARD</strong></span>
-                                        </a>
-                                    </li>
-                                    <li className="nav-item" role="presentation">
-                                        <a onClick={this.handleScoreboardTabClick} className="nav-link text-dark" type="button" id="scoreboard" data-toggle="tab" href="scorecard" role="tab" aria-controls="mca" aria-selected="false">
-                                            <span><strong>LEADER BOARD</strong></span>
-                                        </a>
-                                    </li>
-                                    <li className="nav-item" role="presentation">
-                                        <a onClick={this.handlePollTabClick} className="nav-link text-dark" type="button" id="poll" data-toggle="tab" href="poll" role="tab" aria-controls="mca" aria-selected="false">
-                                            <span><strong>EXIT POLLS</strong></span>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </div>
-                            <div className="my-5">
-                                {
-                                this.state.displayTab==='question' ? (
-                                        <Questioncard
-                                        questionNumber={this.state.currentQuestionNumber}
-                                        question={this.state.currentQuestion}
-                                        options={this.state.currentOptions}  />
-                                    ) : (
-                                        null
-                                    )
-                                }
-                                {
-                                    this.state.displayTab==='scoreboard' ? (
-                                        <div className="d-flex justify-content-center">
-                                            <Chart scores={this.state.scores} />
-                                        </div>
-                                    ) : (
-                                        null
-                                    )
-                                }
-                                {
-                                    this.state.displayTab==='poll' ? (
-                                        <div className="d-flex justify-content-center">
-                                            <Pollchart pollreset={this.pollReset} polldata={this.state.polldata} />
-                                        </div>
-                                    ) : (
-                                        null
-                                    )
-                                }
+                        <div className="Gamecard container mx-0">
+                            <div className="card platecard text-center" style={{width: "100%", minHeight: "60vh"}}>
+                                <div className="d-flex">
+                                    <ul className="nav nav-tabs" id="myTab" role="tablist">
+                                        <li className="nav-item" role="presentation" style={{ width: "34%" }}>
+                                            <a onClick={this.handleQuestionTabClick} className="nav-link text-dark" type="button" id="question" data-toggle="tab" href="question" role="tab" aria-controls="btech" aria-selected="false">
+                                                <span><strong>QUESTION CARD</strong></span>
+                                            </a>
+                                        </li>
+                                        <li className="nav-item" role="presentation">
+                                            <a onClick={this.handleScoreboardTabClick} className="nav-link text-dark" type="button" id="scoreboard" data-toggle="tab" href="scorecard" role="tab" aria-controls="mca" aria-selected="false">
+                                                <span><strong>LEADER BOARD</strong></span>
+                                            </a>
+                                        </li>
+                                        <li className="nav-item" role="presentation">
+                                            <a onClick={this.handlePollTabClick} className="nav-link text-dark" type="button" id="poll" data-toggle="tab" href="poll" role="tab" aria-controls="mca" aria-selected="false">
+                                                <span><strong>EXIT POLLS</strong></span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div className="my-5">
+                                    {
+                                    this.state.displayTab==='question' ? (
+                                            <Questioncard
+                                            questionNumber={this.state.currentQuestionNumber}
+                                            question={this.state.currentQuestion}
+                                            options={this.state.currentOptions}  />
+                                        ) : (
+                                            null
+                                        )
+                                    }
+                                    {
+                                        this.state.displayTab==='scoreboard' ? (
+                                            <div className="d-flex justify-content-center">
+                                                <Chart scores={this.state.scores} />
+                                            </div>
+                                        ) : (
+                                            null
+                                        )
+                                    }
+                                    {
+                                        this.state.displayTab==='poll' ? (
+                                            <div className="d-flex justify-content-center">
+                                                <Pollchart pollreset={this.pollReset} polldata={this.state.polldata} />
+                                            </div>
+                                        ) : (
+                                            null
+                                        )
+                                    }
+                                </div>
                             </div>
                         </div>
-                    </div>
 
-                    <div className="d-flex flex-column justify-content-center">
-                    <button className="btn btn-lg btn-warning mb-3"
-                            disabled={this.state.currentQuestionNumber%2===0 && this.state.currentQuestionNumber<9
-                                && this.state.currentQuestionNumber>0 ? false : true}
-                            onClick={this.handlePollBoothToggler}
-                            style={{ whiteSpace: 'nowrap' }}>
-                            <strong>TOGGLE POLLING BOOTH</strong>
-                        </button>
-                        <button className="btn btn-lg btn-primary mt-3"
-                            onClick={this.handleNextQuestionClick}
-                            style={{ whiteSpace: 'nowrap' }}>
-                            <strong>NEXT QUESTION</strong>
-                        </button>
+                        <div className="d-flex flex-column justify-content-center">
+                        <button className="btn btn-lg btn-warning mb-3"
+                                disabled={this.state.currentQuestionNumber%2===0 && this.state.currentQuestionNumber<9
+                                    && this.state.currentQuestionNumber>0 ? false : true}
+                                onClick={this.handlePollBoothToggler}
+                                style={{ whiteSpace: 'nowrap' }}>
+                                <strong>TOGGLE POLLING BOOTH</strong>
+                            </button>
+                            <button className="btn btn-lg btn-primary mt-3"
+                                onClick={this.handleNextQuestionClick}
+                                style={{ whiteSpace: 'nowrap' }}>
+                                <strong>{this.state.currentQuestionNumber==10 ? "FINAL RESULTS" : "NEXT QUESTION"}</strong>
+                            </button>
+                        </div>
                     </div>
-                </div>
+                    )
+                }
             </div>
         )
     }
