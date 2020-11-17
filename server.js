@@ -1,14 +1,14 @@
 const express = require('express')
-const app = express()
+const app1 = express()
 const path = require('path');
-const port = process.env.PORT || 3000
+const port1 = process.env.PORT || 3000
 
-app.use(express.static(path.join(__dirname, 'build')));
+app1.use(express.static(path.join(__dirname, 'build')));
 
-app.get('/*', function (req, res) {
+app1.get('/*', function (req, res) {
     res.sendFile(path.join(__dirname, 'build', 'index.html'));
 });
 
-app.listen(port, () => {
+app1.listen(port1, () => {
     console.log("App Server Up and Running")
 })

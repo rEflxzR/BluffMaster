@@ -1,5 +1,5 @@
 const express = require('express')
-const app = express()
+const app2 = express()
 const port2 = process.env.PORT || 8000
 const cors = require('cors')
 const questions = require('./questions')
@@ -28,15 +28,15 @@ let currentImposter = null
 let currentQuestionReponse = []
 
 
-app.use(bodyParser.urlencoded({ extended: false }))
-app.use(bodyParser.json())
-app.use(cors())
+app2.use(bodyParser.urlencoded({ extended: false }))
+app2.use(bodyParser.json())
+app2.use(cors())
 
 
 /*------------------------------- ADMIN ROUTES ---------------------------------------*/
 
 // ADMIN LOGIN POST ROUTE
-app.post('/adminlogin', function(req, res) {
+app2.post('/adminlogin', function(req, res) {
   if(req.body.username=='qlimaxz' && req.body.password=='skip2020') {
     resetBackendData()
     res.send({authenticated: true, id: adminId})
@@ -48,14 +48,14 @@ app.post('/adminlogin', function(req, res) {
 
 
 // ADMIN NEW GAMEPIN SET POST ROUTE
-app.post('/newgamepin', function(req, res) {
+app2.post('/newgamepin', function(req, res) {
   if(req.body.adminId==adminId) {
     gamepin = req.body.newgamepin
   }
 })
 
 // ADMIN GAME STARTING BUTTON ROUTE
-app.get('/startgame', function(req, res) {
+app2.get('/startgame', function(req, res) {
   if(req.headers.id==adminId) {
     if(currentplayers!=maxplayers) {
       res.status(200).send({ playersJoined: currentplayers.toString() })
@@ -69,7 +69,7 @@ app.get('/startgame', function(req, res) {
 
 
 // ADMIN NEXT QUESTION POST ROUTE
-app.post('/nextquestion', function(req, res) {
+app2.post('/nextquestion', function(req, res) {
   if(req.body.adminId==adminId) {
     if(currentQuestionNumber<10) {
       currentQuestionNumber++
@@ -90,20 +90,20 @@ app.post('/nextquestion', function(req, res) {
 
 
 // ADMIN PLAYER REPONSE DISPLAY ROUTE
-app.get('/getresponse', function(req, res) {
+app2.get('/getresponse', function(req, res) {
   res.send(currentQuestionReponse[currentQuestionReponse.length-1])
 })
 
 
 // ADMIN SCOREBOARD DISPLAY ROUTE
-app.get('/scoreboard', function(req, res) {
+app2.get('/scoreboard', function(req, res) {
   if(req.headers.id===adminId) {
     res.send(playerScores)
   }
 })
 
 // ADMIN TOGGLE POLL ON/OFF ROUTE
-app.post('/togglepolls', function(req, res){
+app2.post('/togglepolls', function(req, res){
   if(req.body.adminId==adminId) {
     for(let id of Object.keys(PlayersId)) {
       playerVotes[id] = [PlayersId[id], 0]
@@ -113,7 +113,7 @@ app.post('/togglepolls', function(req, res){
 })
 
 // ADMIN POLL RESULTS FETCH ROUTE
-app.get('/pollresults', function(req, res) {
+app2.get('/pollresults', function(req, res) {
   if(req.headers.id===adminId) {
     res.status(200).send(playerVotes)
   }
@@ -123,7 +123,7 @@ app.get('/pollresults', function(req, res) {
 })
 
 // ADMIN POLL RESET COMMAND ROUTE
-app.post('/pollreset', function(req, res) {
+app2.post('/pollreset', function(req, res) {
   if(req.body.adminId===adminId) {
     playerVotes = {}
     for(let id of Object.keys(PlayersId)) {
@@ -135,7 +135,7 @@ app.post('/pollreset', function(req, res) {
 })
 
 // ADMIN POLL ACCEPTION ROUTE
-app.post('/pollsubmit', function(req, res){
+app2.post('/pollsubmit', function(req, res){
   if(req.body.adminId===adminId) {
     const kickedTeamId = maxVotedPlayerId()
     const kickedTeamname = PlayersId[kickedTeamId]
@@ -154,7 +154,7 @@ app.post('/pollsubmit', function(req, res){
 /*------------------------------- PLAYER ROUTES ---------------------------------------*/
 
 // PLAYER LOGIN POST ROUTE
-app.post('/playerlogin', function(req, res) {
+app2.post('/playerlogin', function(req, res) {
   if(Number(req.body.gamepin)==gamepin 
     && teamNamesInUse.indexOf(req.body.teamname)==-1 
     && currentplayers<maxplayers) {
@@ -172,7 +172,7 @@ app.post('/playerlogin', function(req, res) {
 
 
 // PLAYER NEXT QUESTION GET ROUTE
-app.get('/questions', function(req, res) {
+app2.get('/questions', function(req, res) {
   if(req.headers.authorization=='dGFza2ZvcmNlMTQx' 
     && playerScores[req.headers.id][0] && blacklistPlayesId[req.headers.id]==undefined ) {
     if(req.headers.id===currentImposter) {
@@ -192,7 +192,7 @@ app.get('/questions', function(req, res) {
 
 
 // PLAYER RESPONSE SUBMIT POST ROUTE
-app.post('/playerresponse', function(req, res) {
+app2.post('/playerresponse', function(req, res) {
   if(currentQuestionReponse.indexOf(req.body.answer.value)==-1) {
     playerScores[req.body.playerId][1] += Number(req.body.answer.points)
     currentQuestionReponse.push(req.body.answer.value)
@@ -205,7 +205,7 @@ app.post('/playerresponse', function(req, res) {
 })
 
 // PLAYER POLL DISPLAY ROUTE
-app.get('/playerpoll', function(req, res) {
+app2.get('/playerpoll', function(req, res) {
   if(blacklistPlayesId[req.headers.id]==undefined && pollActive && playersVoted[req.headers.id]==undefined) {
     res.status(200).send(PlayersId)
   }
@@ -218,7 +218,7 @@ app.get('/playerpoll', function(req, res) {
 })
 
 // PLAYER POLL RESPONSE SUBMISSION ROUTE
-app.post('/pollresponse', function(req, res){
+app2.post('/pollresponse', function(req, res){
   if(blacklistPlayesId[req.body.playerId]==undefined && playersVoted[req.body.playerId]==undefined) {
     playerVotes[req.body.response][1] += 1
     playersVoted[req.body.playerId] = true
@@ -226,7 +226,7 @@ app.post('/pollresponse', function(req, res){
   }
 })
 
-app.listen(port2, () => {
+app2.listen(port2, () => {
   console.log("API Server Up and Running")
 })
 
